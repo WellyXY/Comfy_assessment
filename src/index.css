@@ -1,0 +1,56 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  /* Responsive base font size — aggressive scaling so text feels properly sized on big displays.
+     ~16px at 1440, ~20px at 1920, ~25px at 2560, capped at 28px. */
+  font-size: clamp(14px, 0.7vw + 6px, 28px);
+}
+
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  background: #202020;
+  color: #fff;
+  font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow: hidden;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* Dot grid background for canvas */
+.canvas-grid {
+  background-color: #202020;
+  background-image:
+    radial-gradient(circle, #2d2e32 1px, transparent 1px);
+  background-size: 22px 22px;
+  background-position: 0 0;
+}
+
+/* Scrollbars fully hidden everywhere — scroll still works via wheel/trackpad/keyboard */
+* { scrollbar-width: none; -ms-overflow-style: none; }
+*::-webkit-scrollbar { width: 0; height: 0; display: none; }
+
+/* Hero carousel — also scrollbar-free (kept for clarity, parent rule already covers it) */
+.hero-scroll { scrollbar-width: none; -ms-overflow-style: none; }
+.hero-scroll::-webkit-scrollbar { display: none; }
+
+/* Hide arrows on number inputs (Run count uses custom up/down) */
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type=number] { -moz-appearance: textfield; }
+
+/* Sticky-note style — semi-transparent dark with subtle border */
+.sticky-note {
+  background: rgba(38, 39, 41, 0.92);
+  border: 1px solid #3c3d42;
+  backdrop-filter: blur(4px);
+}
