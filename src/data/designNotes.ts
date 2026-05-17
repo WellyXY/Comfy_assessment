@@ -6,7 +6,7 @@ export type DesignNote = {
   title: string
   body: string
   target: string
-  steps?: Array<'login' | 'A' | 'B' | 'C'>
+  steps?: Array<'login' | 'A' | 'B'>
 }
 
 export const designNotes: DesignNote[] = [
@@ -101,24 +101,6 @@ export const designNotes: DesignNote[] = [
     steps: ['B'],
   },
 
-  // ── Step 4 · Template loaded (no agent) ──────────────────────────
-  // Frames the friction that justifies the agent investment from Step 3.
-  {
-    id: 'c-direct-edit',
-    category: 'add',
-    title: 'Direct node editing',
-    body: 'Without the agent, users replace assets directly on the canvas. Workable, but requires reading the graph.',
-    target: '[data-coach="character-node"]',
-    steps: ['C'],
-  },
-  {
-    id: 'c-canvas-coach',
-    category: 'add',
-    title: 'Canvas-side coach',
-    body: 'Same 3-step flow, but the spotlight lands on workflow nodes instead of agent chips — higher cognitive load. Motivates the agent investment.',
-    target: '[data-coach="outfit-node"]',
-    steps: ['C'],
-  },
 ]
 
 export const categoryStyles: Record<NoteCategory, { label: string; dot: string; ring: string }> = {

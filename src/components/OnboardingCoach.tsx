@@ -12,7 +12,7 @@ type CoachStep = {
   primaryLabel: string
 }
 
-const AGENT_STEPS: CoachStep[] = [
+const STEPS: CoachStep[] = [
   {
     selector: '[data-coach="avatar"]',
     title: 'Step 1 · Replace character',
@@ -39,40 +39,6 @@ const AGENT_STEPS: CoachStep[] = [
   },
 ]
 
-const CANVAS_STEPS: CoachStep[] = [
-  {
-    selector: '[data-coach="character-node"]',
-    title: 'Step 1 · Replace character image',
-    body: 'This node holds your hero character. Swap the image to recast every shot.',
-    Icon: ImagePlus,
-    side: 'right',
-    primaryLabel: 'Got it',
-  },
-  {
-    selector: '[data-coach="outfit-node"]',
-    title: 'Step 2 · Replace outfit images',
-    body: 'Each outfit slot is a reference. Swap any of them to remix the showcase.',
-    Icon: Package,
-    side: 'bottom',
-    primaryLabel: 'Got it',
-  },
-  {
-    selector: '[data-coach="runbar-run"]',
-    title: 'Step 3 · Hit Run',
-    body: 'Everything is wired up. Press Run to generate the video.',
-    Icon: Sparkles,
-    side: 'bottom',
-    primaryLabel: 'Generate',
-  },
-]
-
-const STEPS_BY_VARIANT = {
-  agent: AGENT_STEPS,
-  canvas: CANVAS_STEPS,
-} as const
-
-export type CoachVariant = keyof typeof STEPS_BY_VARIANT
-
 const TOOLTIP_W = 280
 const TOOLTIP_GAP = 16
 const SPOTLIGHT_PAD = 8
@@ -89,8 +55,6 @@ type Props = {
   /** Optional override for the primary CTA — when provided, runs this instead of `onAdvance`.
       Used to actually open the upload modal on steps 1 & 2. */
   onPrimaryAction?: (step: number) => void
-  /** 'agent' targets chips in the agent panel (default); 'canvas' targets workflow nodes. */
-  variant?: CoachVariant
 }
 
 export function OnboardingCoach({
@@ -98,9 +62,7 @@ export function OnboardingCoach({
   onAdvance,
   onDismiss,
   onPrimaryAction,
-  variant = 'agent',
 }: Props) {
-  const STEPS = STEPS_BY_VARIANT[variant]
   const [rect, setRect] = useState<DOMRect | null>(null)
   const [mounted, setMounted] = useState(false)
   // Measure the actual tooltip box so we can clamp it inside the viewport

@@ -6,7 +6,7 @@ import { ConnectionOverlay } from './ConnectionOverlay'
 type Props = {
   onHide: () => void
   stepLabel: string
-  mode: 'login' | 'A' | 'B' | 'C'
+  mode: 'login' | 'A' | 'B'
 }
 
 export function DesignNotesSidebar({ onHide, stepLabel, mode }: Props) {

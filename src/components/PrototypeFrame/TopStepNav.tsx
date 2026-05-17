@@ -1,6 +1,6 @@
 import { ChevronRight } from 'lucide-react'
 
-type Mode = 'login' | 'A' | 'B' | 'C'
+type Mode = 'login' | 'A' | 'B'
 
 type Props = {
   mode: Mode
@@ -11,7 +11,6 @@ const STEPS: { id: Mode; title: string }[] = [
   { id: 'login', title: 'Sign in' },
   { id: 'A', title: 'New user · Template gate' },
   { id: 'B', title: 'Template loaded · Survey opt-in' },
-  { id: 'C', title: 'Template loaded · No agent' },
 ]
 
 export function TopStepNav({ mode, onChange }: Props) {

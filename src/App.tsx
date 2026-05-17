@@ -14,7 +14,7 @@ import { TabBar } from './components/TabBar'
 import { TemplatesPage } from './components/TemplatesPage'
 import { WorkflowToolbar } from './components/WorkflowToolbar'
 
-type Mode = 'login' | 'A' | 'B' | 'C'
+type Mode = 'login' | 'A' | 'B'
 
 export default function App() {
   const [mode, setMode] = useState<Mode>('login')
@@ -32,23 +32,21 @@ export default function App() {
   const handleModeChange = (m: Mode) => {
     setMode(m)
     if (surveyState === 'dismissed') setSurveyState('popup')
-    // Restart the coach whenever we re-enter a Template-loaded mode.
-    if (m === 'B' || m === 'C') setCoachStep(0)
+    // Restart the coach whenever we re-enter Template loaded.
+    if (m === 'B') setCoachStep(0)
   }
 
   // In State A, no workflow tab is active (the pinned Templates tab handles selection).
   const activeTab = mode === 'A' ? '' : 'gsc_starter_1'
-  const workflowName = mode === 'B' || mode === 'C' ? 'gsc_starter_1' : undefined
-  const nodeCount = mode === 'B' || mode === 'C' ? 6 : 0
+  const workflowName = mode === 'B' ? 'gsc_starter_1' : undefined
+  const nodeCount = mode === 'B' ? 6 : 0
 
   const stepLabel =
     mode === 'login'
       ? 'Step 1 — Sign in'
       : mode === 'A'
         ? 'Step 2 — Land in editor'
-        : mode === 'B'
-          ? 'Step 3 — Template loaded · Survey opt-in'
-          : 'Step 4 — Template loaded · No agent'
+        : 'Step 3 — Template loaded · Survey opt-in'
 
   return (
     <div className="h-screen w-screen flex flex-col bg-[#0c0c0d]">
@@ -83,23 +81,20 @@ export default function App() {
                       <RunBar />
                       <StatusBar nodeCount={nodeCount} />
 
-                      {/* Agent panel only in mode B — mode C hides the entire agent area */}
-                      {mode === 'B' && (
-                        <AgentPanel
-                          onSelectFlow={setSelectedFlow}
-                          uploadFor={uploadFor}
-                          onUploadForChange={setUploadFor}
-                          onCharacterReplaced={() =>
-                            setCoachStep((s) => (s === 0 ? 1 : s))
-                          }
-                          onProductReplaced={() =>
-                            setCoachStep((s) => (s === 1 ? 2 : s))
-                          }
-                          onRunClicked={() =>
-                            setCoachStep((s) => (s === 2 ? -1 : s))
-                          }
-                        />
-                      )}
+                      <AgentPanel
+                        onSelectFlow={setSelectedFlow}
+                        uploadFor={uploadFor}
+                        onUploadForChange={setUploadFor}
+                        onCharacterReplaced={() =>
+                          setCoachStep((s) => (s === 0 ? 1 : s))
+                        }
+                        onProductReplaced={() =>
+                          setCoachStep((s) => (s === 1 ? 2 : s))
+                        }
+                        onRunClicked={() =>
+                          setCoachStep((s) => (s === 2 ? -1 : s))
+                        }
+                      />
 
                       <SurveyPopup
                         mode={
@@ -122,21 +117,16 @@ export default function App() {
                       />
                       <OnboardingCoach
                         step={coachStep}
-                        variant={mode === 'C' ? 'canvas' : 'agent'}
                         onAdvance={() =>
                           setCoachStep((s) => (s < 2 ? s + 1 : -1))
                         }
                         onDismiss={() => setCoachStep(-1)}
                         onPrimaryAction={(s) => {
-                          if (mode === 'C') {
-                            // Canvas variant — every step just advances; final step dismisses.
-                            setCoachStep((cur) => (cur < 2 ? cur + 1 : -1))
-                            return
-                          }
-                          // Agent variant — steps 1 & 2 open the matching upload modal.
+                          // Steps 1 & 2 open the matching upload modal. The modal's "Replace"
+                          // fires onCharacterReplaced/onProductReplaced which advances the coach.
                           if (s === 0) setUploadFor('avatar')
                           else if (s === 1) setUploadFor('product')
-                          else setCoachStep(-1)
+                          else setCoachStep(-1) // Step 3 — Generate dismisses the coach.
                         }}
                       />
                     </>
