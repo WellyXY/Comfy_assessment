@@ -1,9 +1,10 @@
 import { useState } from 'react'
-import { Search } from 'lucide-react'
+import { ArrowUp, Paperclip, Sparkles } from 'lucide-react'
 import { heroCards, templates } from '../../data/templates'
 import { GridCard } from './GridCard'
 import { HeroCard } from './HeroCard'
 import { TagChips } from './TagChips'
+import { ToolSpotlight } from './ToolSpotlight'
 
 type Props = {
   onSelect: () => void
@@ -39,31 +40,40 @@ export function TemplatesPage({ onSelect }: Props) {
       data-tag="templates-page"
       className="absolute inset-0 bg-charcoal-800 overflow-y-auto"
     >
-      <div className="max-w-[76rem] mx-auto px-10 pt-10 pb-16">
-        {/* Page header */}
-        <div className="flex items-end justify-between gap-6 mb-7">
-          <div>
-            <h1 className="text-white text-[1.5rem] font-bold tracking-tight leading-none">
-              Templates
-            </h1>
-            <p className="text-smoke-700 text-[0.875rem] mt-2">
-              Start from a workflow built by the Comfy team or the community.
-            </p>
-          </div>
-          <div className="flex items-center bg-charcoal-700 border border-charcoal-400 rounded-lg h-11 px-3.5 gap-2 w-[22rem] focus-within:border-charcoal-200">
-            <Search size={15} className="text-smoke-700" />
+      <div className="max-w-[76rem] mx-auto px-10 pt-8 pb-16">
+        {/* Agent prompt input — first thing on the page. Chat-style entry point: users
+            describe what they want, the text doubles as a live filter for the template
+            grid below, and the paperclip lets them attach reference assets. */}
+        <div className="mb-6">
+          <div className="relative bg-charcoal-700 border border-charcoal-400 rounded-xl px-4 py-3 flex items-center gap-3 focus-within:border-electric/60 transition-colors">
+            <Sparkles size={16} className="text-electric shrink-0" />
             <input
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder="Search templates"
-              className="flex-1 bg-transparent outline-none text-[0.875rem] text-white placeholder:text-smoke-700"
+              placeholder="Describe what you want to create — the agent picks the workflow"
+              className="flex-1 bg-transparent outline-none text-[0.9375rem] text-white placeholder:text-smoke-700"
             />
+            <label
+              aria-label="Attach assets"
+              className="grid place-items-center w-8 h-8 rounded-full border border-charcoal-400 text-smoke-500 hover:text-white hover:border-charcoal-200 cursor-pointer shrink-0 transition-colors"
+            >
+              <Paperclip size={14} />
+              <input type="file" accept="image/*,video/*" multiple className="hidden" />
+            </label>
+            <button
+              type="button"
+              aria-label="Ask agent"
+              className="grid place-items-center w-8 h-8 rounded-full bg-electric text-black hover:bg-electric/90 shrink-0"
+            >
+              <ArrowUp size={14} strokeWidth={2.5} />
+            </button>
           </div>
         </div>
 
+
         {/* Hero — curated Comfy capability promos (separate from the template list) */}
         {showHero && (
-          <div data-tag="hero-scenarios" className="mb-14">
+          <div data-tag="hero-scenarios" className="mb-6">
             <div className="flex gap-4 overflow-x-auto -mx-1 px-1 snap-x snap-mandatory hero-scroll">
               {heroCards.map((promo) => (
                 <div
@@ -75,6 +85,13 @@ export function TemplatesPage({ onSelect }: Props) {
                 </div>
               ))}
             </div>
+          </div>
+        )}
+
+        {/* Tool spotlight — quick-entry tools, sits between hero and category chips */}
+        {showHero && (
+          <div className="mb-8">
+            <ToolSpotlight />
           </div>
         )}
 
