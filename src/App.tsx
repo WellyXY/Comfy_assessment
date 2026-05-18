@@ -6,7 +6,7 @@ import { DesignNotesSidebar, ShowNotesTab } from './components/DesignNotes/Sideb
 import { LeftRail } from './components/LeftRail'
 import { LoginScreen } from './components/LoginScreen'
 import { OnboardingCoach } from './components/OnboardingCoach'
-import { TopStepNav } from './components/PrototypeFrame/TopStepNav'
+import { ShowTopNavTab, TopStepNav } from './components/PrototypeFrame/TopStepNav'
 import { RunBar } from './components/RunBar'
 import { StatusBar } from './components/StatusBar'
 import { SurveyPopup } from './components/SurveyPopup'
@@ -28,6 +28,8 @@ export default function App() {
   const [coachStep, setCoachStep] = useState<number>(0)
   /** Which upload modal (if any) is open in the agent panel — lifted so the coach can open it. */
   const [uploadFor, setUploadFor] = useState<'avatar' | 'product' | null>(null)
+  /** Step-nav strip visibility. Default visible; can be toggled via Hide / Show. */
+  const [topNavOpen, setTopNavOpen] = useState(true)
 
   const handleModeChange = (m: Mode) => {
     setMode(m)
@@ -50,7 +52,15 @@ export default function App() {
 
   return (
     <div className="h-screen w-screen flex flex-col bg-[#0c0c0d]">
-      <TopStepNav mode={mode} onChange={handleModeChange} />
+      {topNavOpen ? (
+        <TopStepNav
+          mode={mode}
+          onChange={handleModeChange}
+          onHide={() => setTopNavOpen(false)}
+        />
+      ) : (
+        <ShowTopNavTab onShow={() => setTopNavOpen(true)} />
+      )}
 
       <div className="flex flex-1 min-h-0">
         <div className="flex-1 flex flex-col min-w-0 bg-charcoal-800">
